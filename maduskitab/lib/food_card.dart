@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'app_state.dart';
 
 class FoodCard extends StatelessWidget {
   const FoodCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var placeOrder = 0;
     var menuItems = [
       "Fried Egg",
       "MoMo",
@@ -24,10 +25,16 @@ class FoodCard extends StatelessWidget {
       150,
       100,
     ];
+    var descriptions = [
+      "Delicious fried egg with spices.",
+      "Steamed dumplings with meat filling.",
+      "Noodles cooked with minced meat.",
+      "Classic stir-fried noodles with veggies."
+    ];
 
     return ListView(
       children: [
-        for (var items in menuItems)
+        for (var i = 0; i < menuItems.length; i++)
           Card(
             child: Container(
               padding: const EdgeInsets.all(16),
@@ -53,7 +60,7 @@ class FoodCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    items,
+                    menuItems[i],
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -63,15 +70,12 @@ class FoodCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      for (var i = 1;
-                          i < (itemsRating[menuItems.indexOf(items)] * 10) / 10;
-                          i++)
+                      for (var j = 1; j < (itemsRating[i] * 10) / 10; j++)
                         const Icon(Icons.star, color: Colors.yellow),
-                      if ((itemsRating[menuItems.indexOf(items)] * 10) % 10 !=
-                          0)
+                      if ((itemsRating[i] * 10) % 10 != 0)
                         const Icon(Icons.star_half, color: Colors.yellow),
                       const SizedBox(width: 5),
-                      Text('${itemsRating[menuItems.indexOf(items)]}'),
+                      Text('${itemsRating[i]}'),
                       const SizedBox(width: 5),
                       const Text('(users)'),
                     ],
@@ -80,24 +84,22 @@ class FoodCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Rs.' '${itemPrice[menuItems.indexOf(items)]}'),
+                      Text('Rs.' '${itemPrice[i]}'),
                       const SizedBox(width: 30),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              placeOrder;
-                            },
-                            child: const Icon(Icons.shopping_basket),
-                          ),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              placeOrder;
-                            },
-                            child: Text('Order'),
-                          ),
-                        ],
+                      ElevatedButton(
+                        onPressed: () {
+                          var appState = context.read<MyAppState>();
+                          // Create a BasketItem and add it to the basket
+                          appState.addItemToBasket(
+                            BasketItem(
+                              name: menuItems[i],
+                              rating: itemsRating[i],
+                              description: descriptions[i],
+                              price: itemPrice[i],
+                            ),
+                          );
+                        },
+                        child: Text('Order'),
                       ),
                     ],
                   ),

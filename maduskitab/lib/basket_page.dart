@@ -7,26 +7,102 @@ class BasketPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
-    if (appState.favorites.isEmpty) {
+    if (appState.basketItems.isEmpty) {
       return Center(
         child: Text('Basket is empty'),
       );
     }
 
-    return ListView(
+    // Calculate the total price
+    int totalPrice = appState.basketItems.fold(
+      0,
+      (sum, item) => sum + (item.price * item.quantity),
+    );
+
+    return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child:
-              Text('You have' '${appState.favorites.length} items in Basket:'),
-        ),
-        for (var pair in appState.favorites)
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.shopping_basket),
-              title: Text(pair.asLowerCase),
-            ),
+        Expanded(
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  'You have ${appState.basketItems.length} items in your basket:',
+                ),
+              ),
+              for (var item in appState.basketItems)
+                Card(
+                  child: ListTile(
+                    title: Text(item.name),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Rating: ${item.rating}'),
+                        Text('Description: ${item.description}'),
+                        Text('Price: Rs. ${item.price}'),
+                      ],
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: () {
+                            appState.removeItemFromBasket(item);
+                          },
+                        ),
+                        Text('${item.quantity}'),
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () {
+                            appState.addItemToBasket(item);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
           ),
+        ),
+        // Add button at the bottom to show total price
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 7,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total: Rs. $totalPrice',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // You can add any action for the button, like placing the order
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Order placed! Total: Rs. $totalPrice'),
+                    ),
+                  );
+                },
+                child: Text('Place Order'),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
