@@ -9,7 +9,13 @@ class BasketPage extends StatelessWidget {
 
     if (appState.basketItems.isEmpty) {
       return Center(
-        child: Text('Basket is empty'),
+        child: Text(
+          'Basket is empty',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       );
     }
 
@@ -33,13 +39,25 @@ class BasketPage extends StatelessWidget {
               for (var item in appState.basketItems)
                 Card(
                   child: ListTile(
-                    title: Text(item.name),
+                    title: Text(
+                      item.name,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Rating: ${item.rating}'),
                         Text('Description: ${item.description}'),
-                        Text('Price: Rs. ${item.price}'),
+                        Text(
+                          'Price: Rs. ${item.price}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ],
                     ),
                     trailing: Row(
@@ -65,6 +83,7 @@ class BasketPage extends StatelessWidget {
             ],
           ),
         ),
+        // place order button
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -96,7 +115,13 @@ class BasketPage extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text('Place Order'),
+                child: Text(
+                  'Place Order',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),

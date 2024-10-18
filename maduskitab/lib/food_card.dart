@@ -12,24 +12,28 @@ class FoodCard extends StatelessWidget {
       "MoMo",
       "Keema Noodels",
       "Chowmein",
+      "another",
     ];
     var itemsRating = [
       4.5,
       3.2,
       3.7,
       4.7,
+      0.0,
     ];
     var itemPrice = [
       50,
       120,
       150,
       100,
+      20,
     ];
     var descriptions = [
       "Delicious fried egg with spices.",
       "Steamed dumplings with meat filling.",
       "Noodles cooked with minced meat.",
-      "Classic stir-fried noodles with veggies."
+      "Classic stir-fried noodles with veggies.",
+      "N/A",
     ];
 
     return ListView(
