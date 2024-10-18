@@ -65,7 +65,6 @@ class BasketPage extends StatelessWidget {
             ],
           ),
         ),
-        // Add button at the bottom to show total price
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -91,7 +90,6 @@ class BasketPage extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // You can add any action for the button, like placing the order
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Order placed! Total: Rs. $totalPrice'),
